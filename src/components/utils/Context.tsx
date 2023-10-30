@@ -15,12 +15,16 @@ export type NumberPhone = {
   setNumberPhone: (prev: string) => void;
   isCheck: boolean;
   setIsCheck: (a: boolean) => void;
+  isCheckSubmit: boolean;
+  setIsCheckSubmit: (s: boolean) => void;
 };
 export const FormContext = createContext<NumberPhone>({
   numberPhone: '',
   setNumberPhone: () => {},
   isCheck: false,
   setIsCheck: () => {},
+  isCheckSubmit: false,
+  setIsCheckSubmit: () => {},
 });
 
 export const useContextForm = () => useContext(FormContext);

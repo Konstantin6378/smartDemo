@@ -1,18 +1,35 @@
-import { useForm } from 'react-hook-form';
-//theme
+import { SubmitHandler, useForm } from 'react-hook-form';
 import Button from './Button';
 import InputMask from 'react-input-mask';
+import { TSingUpSchema, signUpSchma } from '../lib/types';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useContextForm } from '@/utils/Context';
-import { Checkbox as Check } from '@material-tailwind/react';
 import DigitButton from './DigitButton';
+import { Checkbox as Check } from '@material-tailwind/react';
+import useFetch from '@/hooks/useFetch';
+const API = import.meta.env.VITE_API_KEY;
 export default function HookFormDoc() {
-  const { numberPhone, setNumberPhone, isCheck, setIsCheck } = useContextForm();
+  const { numberPhone, setNumberPhone, isCheck, setIsCheck, isCheckSubmit, setIsCheckSubmit } = useContextForm();
   const {
     formState: { errors },
     handleSubmit,
     register,
-  } = useForm();
-  const onSubmit = () => {};
+  } = useForm<TSingUpSchema>({
+    resolver: zodResolver(signUpSchma),
+  });
+  const { get } = useFetch(`${API}`);
+  const onSubmit: SubmitHandler<TSingUpSchema> = () => {
+    if (numberPhone.length > 11) {
+      get(`&number=${numberPhone}`)
+        .then((res) => {
+          console.log(res);
+          setIsCheckSubmit(!isCheckSubmit);
+        })
+        .catch((error) => console.error(error));
+    }
+
+    setNumberPhone('+7');
+  };
 
   return (
     <>
@@ -33,7 +50,7 @@ export default function HookFormDoc() {
           <div className="flex justify-around my-4 w-[80%]">
             <Check
               containerProps={{
-                className: 'p-0 rounded ',
+                className: 'p-0 rounded',
               }}
               icon={
                 <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0 0 50 50">

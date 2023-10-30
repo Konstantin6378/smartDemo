@@ -12,6 +12,7 @@ export default function MainPage({ videoProgress, setVideoProgress }: MainPagePr
   const navigate = useNavigate();
   const [numberPhone, setNumberPhone] = useState('+7');
   const [isCheck, setIsCheck] = useState(false);
+  const [isCheckSubmit, setIsCheckSubmit] = useState(false);
   const timeoutRef = useRef<number>();
 
   // при переходе на эту страницу востонавливает прогресс видео.
@@ -45,7 +46,7 @@ export default function MainPage({ videoProgress, setVideoProgress }: MainPagePr
   }, []);
 
   return (
-    <FormContext.Provider value={{ numberPhone, setNumberPhone, isCheck, setIsCheck }}>
+    <FormContext.Provider value={{ numberPhone, setNumberPhone, isCheck, setIsCheck, isCheckSubmit, setIsCheckSubmit }}>
       <div className="bg-main-page bg-no-repeat w-[1280px] h-[720px]">
         <div className="flex justify-center relative w-full h-full">
           <div className="w-[30%] flex justify-center bg-[#86D3F4] left-0 h-full absolute">
