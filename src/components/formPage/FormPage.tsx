@@ -1,11 +1,48 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import HookFormDoc from '@/ui/Form';
 import { FormContext } from '@/utils/Context';
 
-export default function FormPage() {
+interface MainPageProps {
+  videoProgress: number;
+  setVideoProgress: (progress: number) => void;
+}
+
+export default function MainPage({ videoProgress, setVideoProgress }: MainPageProps) {
+  const navigate = useNavigate();
   const [numberPhone, setNumberPhone] = useState('+7');
   const [isCheck, setIsCheck] = useState(false);
+  const timeoutRef = useRef<number>();
+
+  // при переходе на эту страницу востонавливает прогресс видео.
+  useEffect(() => {
+    setVideoProgress(videoProgress);
+  }, []);
+
+  // Возвращает на стартовую страницу если нет активности от пользователя в течении 20 секунд
+
+  useEffect(() => {
+    const handleUserInteraction = () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+
+      timeoutRef.current = window.setTimeout(() => {
+        navigate('/');
+      }, 20000);
+    };
+
+    document.addEventListener('mousemove', handleUserInteraction);
+    document.addEventListener('keydown', handleUserInteraction);
+
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      document.removeEventListener('mousemove', handleUserInteraction);
+      document.removeEventListener('keydown', handleUserInteraction);
+    };
+  }, []);
 
   return (
     <FormContext.Provider value={{ numberPhone, setNumberPhone, isCheck, setIsCheck }}>

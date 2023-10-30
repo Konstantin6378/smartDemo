@@ -4,6 +4,7 @@ import Button from './Button';
 import InputMask from 'react-input-mask';
 import { useContextForm } from '@/utils/Context';
 import { Checkbox as Check } from '@material-tailwind/react';
+import DigitButton from './DigitButton';
 export default function HookFormDoc() {
   const { numberPhone, setNumberPhone, isCheck, setIsCheck } = useContextForm();
   const {
@@ -28,6 +29,7 @@ export default function HookFormDoc() {
           />
           {errors.numberPhone && <p>Не меньше 10 символов</p>}
           <p className="text-xs w-[80%] font-medium my-4">и с Вами свяжется наш менеждер для дальнейшей консультации</p>
+          <DigitButton />
           <div className="flex justify-around my-4 w-[80%]">
             <Check
               containerProps={{
