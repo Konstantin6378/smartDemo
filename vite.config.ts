@@ -11,6 +11,7 @@ export default defineConfig({
       '@/page': path.resolve(__dirname, './src/page'),
       '@/screen': path.resolve(__dirname, './src/components/screen'),
       '@/ui': `${path.resolve(__dirname, './src/components/ui/')}`,
+      '@/utils': `${path.resolve(__dirname, './src/components/utils/')}`,
       '@/hooks': `${path.resolve(__dirname, './src/hooks/')}`,
       '@/assets': path.resolve(__dirname, './src/assets/'),
     },

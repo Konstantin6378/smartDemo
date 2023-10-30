@@ -12,6 +12,7 @@
       "@/page/*": ["./src/page/*"],
       "@/screen/*": ["src/components/screen/*"],
       "@/ui/*": ["./src/components/ui/*"],
+      "@/utils/*": ["./src/components/utils/*"],
       "@/hooks/*": ["./src/hooks/*"],
       "@/public/*": ["./src/public/*"],
       "@/assets/*": ["./src/assets/*"]
