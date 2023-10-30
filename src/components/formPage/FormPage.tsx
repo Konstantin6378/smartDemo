@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import HookFormDoc from '@/ui/Form';
+import HookFormDoc from '../ui/Form';
 import { FormContext } from '@/utils/Context';
+import FormAccepted from './FormAccepted';
 
 interface MainPageProps {
   videoProgress: number;
@@ -50,7 +51,7 @@ export default function MainPage({ videoProgress, setVideoProgress }: MainPagePr
       <div className="bg-main-page bg-no-repeat w-[1280px] h-[720px]">
         <div className="flex justify-center relative w-full h-full">
           <div className="w-[30%] flex justify-center bg-[#86D3F4] left-0 h-full absolute">
-            <HookFormDoc />
+            {isCheckSubmit ? <FormAccepted /> : <HookFormDoc />}
           </div>
           <Link
             className="text-black font-bold right-0 bg-white hover:border-white border-black border-4 mr-3 mt-2 absolute px-6 py-2 hover:bg-black hover:text-white active:bg-black/25"
