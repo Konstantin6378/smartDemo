@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import HookFormDoc from '../ui/Form';
+import HookFormDoc from './Form';
 import { FormContext } from '@/utils/Context';
 import FormAccepted from './FormAccepted';
 
@@ -31,7 +31,7 @@ export default function MainPage({ videoProgress, setVideoProgress }: MainPagePr
 
       timeoutRef.current = window.setTimeout(() => {
         navigate('/');
-      }, 20000);
+      }, 10000);
     };
 
     document.addEventListener('mousemove', handleUserInteraction);

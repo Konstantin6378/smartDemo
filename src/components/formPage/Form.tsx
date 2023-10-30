@@ -1,10 +1,10 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
-import Button from './Button';
+import Button from '../ui/Button';
 import InputMask from 'react-input-mask';
 import { TSingUpSchema, signUpSchma } from '../lib/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useContextForm } from '@/utils/Context';
-import DigitButton from './DigitButton';
+import DigitButton from '../ui/DigitButton';
 import { Checkbox as Check } from '@material-tailwind/react';
 import useFetch from '@/hooks/useFetch';
 const API = import.meta.env.VITE_API_KEY;
@@ -17,7 +17,9 @@ export default function HookFormDoc() {
   } = useForm<TSingUpSchema>({
     resolver: zodResolver(signUpSchma),
   });
+
   const { get } = useFetch(`${API}`);
+
   const onSubmit: SubmitHandler<TSingUpSchema> = () => {
     if (numberPhone.length > 11) {
       get(`&number=${numberPhone}`)
@@ -38,7 +40,7 @@ export default function HookFormDoc() {
           <h2 className="text-2xl w-full mb-5 font-medium ">Введите ваш номер мобильного телефона</h2>
           <InputMask
             typeof="text"
-            className={'text-2xl w-full  font-bold bg-[#86D3F4]'}
+            className={`text-2xl w-full  font-bold bg-[#86D3F4]`}
             mask="        +7(999)999-99-99"
             {...register('numberPhone')}
             value={numberPhone}
