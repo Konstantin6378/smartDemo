@@ -21,7 +21,7 @@ export default function HookFormDoc() {
   const { get } = useFetch(`${API}`);
 
   const onSubmit: SubmitHandler<TSingUpSchema> = () => {
-    if (numberPhone.length > 11) {
+    if (numberPhone.length >= 11) {
       get(`&number=${numberPhone}`)
         .then((res) => {
           console.log(res);

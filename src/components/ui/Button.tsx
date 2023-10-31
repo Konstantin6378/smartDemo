@@ -7,14 +7,18 @@ type ButtonType = {
   className?: string;
   disabled?: boolean;
   onClick?: () => void;
+  ref?: React.Ref<HTMLButtonElement>;
 };
 
-export default function Button(props: ButtonType) {
+const Button = React.forwardRef<HTMLButtonElement, ButtonType>((props, ref) => {
   const { onClick, disabled, children, type, className, ...rest } = props;
   const classes = clsx(className);
+
   return (
-    <button disabled={disabled} type={type} onClick={onClick} className={classes} {...rest}>
+    <button disabled={disabled} ref={ref} type={type} onClick={onClick} className={classes} {...rest}>
       {children}
     </button>
   );
-}
+});
+
+export default Button;

@@ -14,7 +14,7 @@ export type NumberPhone = {
   numberPhone: string;
   setNumberPhone: (prev: string) => void;
   isCheck: boolean;
-  setIsCheck: (a: boolean) => void;
+  setIsCheck: (prev: boolean) => void;
   isCheckSubmit: boolean;
   setIsCheckSubmit: (s: boolean) => void;
 };

@@ -61,6 +61,8 @@ function VideoBanerPage({ videoProgress, setVideoProgress }: VideoBanerPageProps
           <video
             ref={videoRef}
             loop
+            muted
+            autoPlay
             onTimeUpdate={() => {
               setVideoProgress(videoRef.current?.currentTime || 0);
             }}

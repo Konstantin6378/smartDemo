@@ -1,38 +1,46 @@
-export const dataNumber = [
+export const dataButton = [
   {
     id: 0,
-    number: 1,
+    button: 1,
   },
   {
     id: 1,
-    number: 2,
+    button: 2,
   },
   {
     id: 2,
-    number: 3,
+    button: 3,
   },
   {
     id: 3,
-    number: 4,
+    button: 4,
   },
   {
     id: 4,
-    number: 5,
+    button: 5,
   },
   {
     id: 5,
-    number: 6,
+    button: 6,
   },
   {
     id: 6,
-    number: 7,
+    button: 7,
   },
   {
     id: 7,
-    number: 8,
+    button: 8,
   },
   {
     id: 8,
-    number: 9,
+    button: 9,
+  },
+  {
+    id: 9,
+    button: 'Стереть',
+  },
+  {
+    id: 10,
+    button: 0,
   },
 ];

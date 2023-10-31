@@ -1,22 +1,48 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useContextForm } from '@/utils/Context';
 
 import Button from './Button';
-import { dataNumber } from './data';
+import { dataButton } from './data';
 
 export default function DigitButton() {
   const { numberPhone, setNumberPhone } = useContextForm();
 
   const [selectedElement, setSelectedElement] = useState(0);
+  const selectedButtonRef = useRef<HTMLButtonElement>(null);
 
   const handleBackspace = () => {
-    if (numberPhone.length > 0) {
+    if (numberPhone.length > 2) {
       setNumberPhone(numberPhone.slice(0, -1));
     }
   };
 
-  const handleKeyPress = (event: { key: string }) => {
+  const maxLength = 12;
+
+  const handleButtonClick = (index: number) => {
+    setSelectedElement(index);
+
+    if (index === 9) {
+      handleBackspace();
+    } else {
+      const value = dataButton[index].button;
+
+      if (numberPhone.length < maxLength) {
+        setNumberPhone(numberPhone + value);
+      }
+    }
+  };
+
+  const handleKeyPress = (event: { key: string; preventDefault: () => void }) => {
     switch (event.key) {
+      case 'Tab':
+        event.preventDefault();
+
+        if (selectedElement === 10) {
+          setSelectedElement(0);
+        } else {
+          setSelectedElement(selectedElement + 1);
+        }
+        break;
       case 'ArrowUp':
         if (selectedElement === 0 || selectedElement === 1 || selectedElement === 2) {
           setSelectedElement(selectedElement);
@@ -60,22 +86,29 @@ export default function DigitButton() {
         break;
 
       case 'Enter':
+        event.preventDefault();
         if (selectedElement === 9) {
           handleBackspace();
-        } else if (selectedElement === 10) {
-          setNumberPhone(numberPhone + '0');
-        } else if (selectedElement < 9) {
-          const value = dataNumber[selectedElement].number;
-          setNumberPhone(numberPhone + value);
         } else {
-          handleBackspace();
+          const value = dataButton[selectedElement].button;
+
+          if (numberPhone.length < maxLength) {
+            setNumberPhone(numberPhone + value);
+          }
         }
+
         break;
 
       default:
         break;
     }
   };
+
+  useEffect(() => {
+    if (selectedButtonRef.current) {
+      selectedButtonRef.current.focus();
+    }
+  }, [selectedElement]);
 
   useEffect(() => {
     document.addEventListener('keydown', handleKeyPress);
@@ -86,45 +119,29 @@ export default function DigitButton() {
 
   return (
     <div className="grid grid-cols-3 gap-2 w-[80%]">
-      {dataNumber.map((num, index) => (
+      {dataButton.map((num, index) => (
         <Button
+          ref={index === selectedElement ? selectedButtonRef : null}
           className={`
-            text-2xl font-bold px-2 py-2 
-            hover:bg-black hover:text-white 
-            active:bg-black/25 outline-black border rounded-xl  
+            ${
+              num.button === 0
+                ? 'text-2xl col-start-3 font-bold px-2 py-2  hover:bg-black hover:text-white active:bg-black/25 outline-black border rounded-xl'
+                : 'text-2xl font-bold px-2 py-2 hover:bg-black hover:text-white active:bg-black/25 outline-black border rounded-xl  '
+            }
+            ${
+              num.button === 'Стереть'
+                ? 'px-2 py-2 col-start-1 col-end-3 uppercase font-medium hover:bg-black hover:text-white active:bg-black/25 outline-black border rounded-xl'
+                : 'text-2xl font-bold px-2 py-2 hover:bg-black hover:text-white active:bg-black/25 outline-black border rounded-xl  '
+            }
             ${index === selectedElement ? 'bg-black text-white' : ''}
           `}
           type="button"
           key={num.id}
-          onClick={() => setNumberPhone(numberPhone + num.number)}
+          onClick={() => handleButtonClick(index)}
         >
-          {num.number}
+          {num.button}
         </Button>
       ))}
-
-      <Button
-        className={`
-          px-2 py-2 col-start-1 col-end-3 uppercase font-semibold 
-          hover:bg-black hover:text-white active:bg-black/25 outline-black border rounded-xl  
-          ${selectedElement === 9 ? 'bg-black text-white' : ''}
-        `}
-        type="button"
-        onClick={handleBackspace}
-      >
-        Стереть
-      </Button>
-
-      <Button
-        className={`
-          text-2xl col-start-3 font-bold px-2 py-2  
-          hover:bg-black hover:text-white active:bg-black/25 outline-black border rounded-xl
-          ${selectedElement === 10 ? 'bg-black text-white' : ''} 
-        `}
-        type="button"
-        onClick={() => setNumberPhone(numberPhone + '0')}
-      >
-        0
-      </Button>
     </div>
   );
 }
