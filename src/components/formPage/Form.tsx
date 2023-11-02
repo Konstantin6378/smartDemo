@@ -3,12 +3,14 @@ import Button from '../ui/Button';
 import InputMask from 'react-input-mask';
 import { TSingUpSchema, signUpSchma } from '../lib/types';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useContextForm } from '@/utils/Context';
+import { NumberDataType, useContextForm } from '@/utils/Context';
 import DigitButton from '../ui/DigitButton';
 import { Checkbox as Check } from '@material-tailwind/react';
 import useFetch from '@/hooks/useFetch';
+import { useEffect, useState } from 'react';
 const API = import.meta.env.VITE_API_KEY;
 export default function HookFormDoc() {
+  const [isData, setIsData] = useState<NumberDataType | null>(null);
   const { numberPhone, setNumberPhone, isCheck, setIsCheck, isCheckSubmit, setIsCheckSubmit } = useContextForm();
   const {
     formState: { errors },
@@ -17,6 +19,17 @@ export default function HookFormDoc() {
   } = useForm<TSingUpSchema>({
     resolver: zodResolver(signUpSchma),
   });
+
+  useEffect(() => {
+    fetch(`${API}&number=${numberPhone}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data) {
+          setIsData(data);
+        }
+      })
+      .catch((error) => console.log(error));
+  }, [numberPhone]);
 
   const { get } = useFetch(`${API}`);
 
@@ -40,12 +53,18 @@ export default function HookFormDoc() {
           <h2 className="text-2xl w-full mb-5 font-medium ">Введите ваш номер мобильного телефона</h2>
           <InputMask
             typeof="text"
-            className={`text-2xl w-full  font-bold bg-[#86D3F4]`}
+            className={
+              numberPhone.length > 11 && !isData?.valid
+                ? 'text-2xl w-full font-bold bg-[#86D3F4] text-red-400'
+                : `text-2xl w-full  font-bold bg-[#86D3F4]`
+            }
             mask="        +7(999)999-99-99"
             {...register('numberPhone')}
             value={numberPhone}
             onChange={(e) => setNumberPhone(e.target.value)}
           />
+
+          {/* <h1>{isData?.valid}</h1> */}
           {errors.numberPhone && <p>Не меньше 10 символов</p>}
           <p className="text-xs w-[80%] font-medium my-4">и с Вами свяжется наш менеждер для дальнейшей консультации</p>
           <DigitButton />
